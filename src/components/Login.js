@@ -1,6 +1,9 @@
 import Header from "./Header";
 import { CheckName, checkEmailPassword } from "../utils/validate";
 import { useState, useRef } from "react";
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../utils/firebase";
+
 const Login = () => {
   const [isSignedIn, setSignedIn] = useState(true);
   const [errorMessage1, setErrorMessage1] = useState(null);
@@ -27,6 +30,45 @@ const Login = () => {
     setErrorMessage2(message2);
     console.log(email.current.value, password.current.value);
     console.log(message1, message2);
+
+    if (message1 && message2) return;
+    if (!isSignedIn) {
+      // sign up page
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage2(errorCode + "-" + errorMessage);
+          // ..
+        });
+    } else {
+      //sign in page
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage2(errorCode + "-" + errorMessage);
+        });
+    }
   };
   return (
     <div className="relative">
@@ -54,7 +96,6 @@ https://assets.nflxext.com/ffe/siteui/vlv3/ff5587c5-1052-47cf-974b-a97e3b4f0656/
             <p className="text-red-500 px-6">{errorMessage1}</p>
           </>
         )}
-
         <input
           ref={email}
           type="email"
@@ -68,6 +109,7 @@ https://assets.nflxext.com/ffe/siteui/vlv3/ff5587c5-1052-47cf-974b-a97e3b4f0656/
           placeholder="Password"
         />
         <p className="px-6 text-red-500">{errorMessage2} </p>
+
         <button
           onClick={handleEvent}
           className="text-white bg-red-700 p-2 mx-6 my-2 rounded-md"
