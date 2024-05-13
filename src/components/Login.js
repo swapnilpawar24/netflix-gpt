@@ -1,13 +1,21 @@
 import Header from "./Header";
 import { CheckName, checkEmailPassword } from "../utils/validate";
 import { useState, useRef } from "react";
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { addUser } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [isSignedIn, setSignedIn] = useState(true);
   const [errorMessage1, setErrorMessage1] = useState(null);
   const [errorMessage2, setErrorMessage2] = useState(null);
+
+  const dispatch = useDispatch();
   const fullName = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -42,6 +50,21 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: fullName.current.value,
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName }),
+              );
+              // Profile updated!
+            })
+            .catch((error) => {
+              // An error occurred
+              // setErrorMessage1(error.message);
+            });
+
           console.log(user);
         })
         .catch((error) => {
@@ -60,7 +83,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
+
           // ...
         })
         .catch((error) => {
