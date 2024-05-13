@@ -9,6 +9,7 @@ import {
 import { auth } from "../utils/firebase";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
+import { backgroundIMG } from "../utils/constants";
 
 const Login = () => {
   const [isSignedIn, setSignedIn] = useState(true);
@@ -96,11 +97,7 @@ const Login = () => {
   return (
     <div className="relative">
       <Header />
-      <img
-        src="
-https://assets.nflxext.com/ffe/siteui/vlv3/ff5587c5-1052-47cf-974b-a97e3b4f0656/065df910-dec3-46ae-afa8-7ad2b52dce40/IN-en-20240506-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-        alt="bg_img"
-      />
+      <img src={backgroundIMG} alt="bg_img" />
       <form
         onSubmit={(e) => e.preventDefault()}
         className="absolute w-2/5 p-10 bg-black top-[120px] mx-auto right-0 left-0 flex flex-col bg-opacity-75 rounded-md"

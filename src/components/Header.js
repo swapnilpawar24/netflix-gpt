@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import { netflixLOGO, profileICON } from "../utils/constants";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -42,15 +43,13 @@ const Header = () => {
     <div className="w-screen absolute px-8 py-2 bg-gradient-to-b from-gray-950 z-50 flex justify-between">
       <img
         className="w-44"
-        src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
-        alt="logo"
+        src={netflixLOGO}
       />
       {user && (
         <div className="flex mr-8 gap-x-8 ">
           <img
             className="w-12 h-12 my-4"
-            src="https://wallpapers.com/images/high/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.webp"
-            alt="profile-logo"
+            src={profileICON}
           />
           <button
             onClick={handleSignOut}
