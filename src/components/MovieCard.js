@@ -1,7 +1,12 @@
 import React from "react";
+import { CDN_posterURL } from "../utils/constants";
 
-const MovieCard = () => {
-  return <div></div>;
+const MovieCard = ({ posterPath }) => {
+  return (
+    <div className="w-48">
+      <img src={CDN_posterURL + posterPath} alt="Movie poster" />
+    </div>
+  );
 };
 
 export default MovieCard;
